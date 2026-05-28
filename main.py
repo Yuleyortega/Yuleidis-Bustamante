@@ -1,32 +1,74 @@
-import tkinter as  tk
-ventana = tk.Tk()
-ventana.title("Tablero de ajedrez")
+import pygame, sys
+
+pygame.init()
 
 Dimension = 8
 Tamaño_casilla = 80
 Ancho = Alto = Dimension * Tamaño_casilla
 
-color_Blanco = (255, 255, 255)
-color_Negro = (0, 0, 0)
+pantalla = pygame.display.set_mode((Ancho, Alto))
+pygame.display.set_caption("Tablero de ajedrez")
 
-lienzo = tk.Canvas(ventana, width = 8 * Tamaño_casilla, height= 8 * Tamaño_casilla)
-lienzo.pack()
+fuente = pygame.font.SysFont("arial", 60)
 
-for fila in  range(8):
-    for columna in range(8):
+BLANCO = (255, 255, 255)
+GRIS = (128, 128, 128)
+NEGRO = (0, 0, 0)
+ROJO = (255, 0, 0)
 
-        x1 = columna * Tamaño_casilla
-        y1 = fila * Tamaño_casilla
-        x2 = columna * Tamaño_casilla
-        y2 = fila * Tamaño_casilla
+tablero_inicial = [
+["t", "c", "a", "d", "r", "a", "c", "t"],
+["p", "p", "p", "p", "p", "p", "p","p"],
+["", "", "", "", "", "", "", ""],
+["", "", "", "", "", "", "", ""],
+["", "", "", "", "", "", "", ""],
+["", "", "", "", "", "", "", ""],
+["P", "P", "P", "P", "P", "P", "P", "P"],
+["T", "C", "A", "D", "R", "A", "C", "T"],
+]
+dibujo_piezas= {
+  "t": "♜", "c": "♞", "a": "♝", "d": "♛", "r": "♚", "p": "♟",
 
+    "T": "♖", "C": "♘", "A": "♗", "D": "♕", "R": "♔", "P": "♙"
+}
 
-        if (fila + columna) % 2 == 0:
-            color = color_Blanco
-        else:
-            color = color_Negro
+jugando = True
+while jugando:
 
-        lienzo.create_rectangle(x1, y1, x2, y2, fill=color, outline="")
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.quit()
 
-ventana.mainloop()
+    for fila in  range(8):
+       for columna in range(8):
 
+            x1 = columna * Tamaño_casilla
+            y1 = fila * Tamaño_casilla
+            
+
+            if (fila + columna) % 2 == 0:
+                color = BLANCO
+            else:
+                color = NEGRO
+
+            pygame.draw.rect(pantalla, color, [x1, y1, Tamaño_casilla, Tamaño_casilla])
+            
+            letra = tablero_inicial[fila][columna]
+
+            if letra != "":
+                simbolo_real = dibujo_piezas[letra]
+
+                if letra in ["T", "C", "A","D", "R", "P"]:
+                    color_ficha = BLANCO
+
+                else:
+                    color_ficha = GRIS
+
+                texto_imagen = fuente.render(simbolo_real, True, color_ficha)
+
+                centro_x = x1 + 15
+                centro_y = y1 + 5
+
+                pantalla.blit(texto_imagen, ( centro_x, centro_y))
+    pygame.display.flip()
