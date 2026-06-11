@@ -37,7 +37,7 @@ TABLERO_INICIAL = [
     ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R']
 ]
 
-# ------------------- INICIALIZACIÓN -------------------
+
 pygame.init()
 pantalla = pygame.display.set_mode((ANCHO, ALTO))
 pygame.display.set_caption("Ajedrez Completo")
